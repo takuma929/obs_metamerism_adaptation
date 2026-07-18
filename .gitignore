@@ -1,0 +1,15 @@
+# ── OS / editor junk ──────────────────────────────────────────────
+.DS_Store
+._*
+Thumbs.db
+*.asv
+
+# ── Local session data ────────────────────────────────────────────
+.claude/
+
+# ── Manuscript (the paper itself — not part of the code release) ──
+doc/
+
+# ── Generated outputs (regenerate with `main`) ───────────────────
+results/
+figs/
