@@ -88,9 +88,9 @@ The figure **script** numbers were fixed early and no longer match the final
 | `plot_fig1_observers`                 | Figure 1 — individual-observer cone fundamentals |
 | `plot_fig2_stimuli`                   | Figure 2 — reflectances, illuminants, display primaries, gamut |
 | `plot_fig3_schematic`                 | Figure 3 — metamerism-quantification schematic |
-| `plot_fig5_degree_of_metamerism`      | **Figure 4** — metamerism vs degree of adaptation |
-| `plot_fig6_ellipses`                  | **Figure 5** — CAM16-UCS (a′, b′) ellipses before/after adaptation |
-| `plot_fig4_diagonality`               | **Figure 6** — cross-observer map D distribution |
+| `plot_fig5_degree_of_metamerism`      | Figure 4 — metamerism vs degree of adaptation |
+| `plot_fig6_ellipses`                  | Figure 5 — CAM16-UCS (a′, b′) ellipses before/after adaptation |
+| `plot_fig4_diagonality`               | Figure 6 — cross-observer map D distribution |
 
 Each figure script writes into its own `figs/figN/` subfolder (named by the
 *script* number).
