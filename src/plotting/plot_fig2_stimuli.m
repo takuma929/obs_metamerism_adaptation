@@ -433,9 +433,9 @@ sc = scatter(x_samp, y_samp, ...
 sc.MarkerFaceAlpha = 0.20;
 sc.MarkerEdgeAlpha = 0.00;
 
-% --- D65 white point (white, enlarged for visibility)
-% Standard D65 chromaticity (0.3127, 0.3290) marked as a white cross.
-scatter(0.3127, 0.3290, 60, [1 1 1], '+', 'LineWidth', 1.5, 'HandleVisibility','off');
+% --- D65 white point: plain black cross at the standard D65 chromaticity
+% (0.3127, 0.3290); the same black '+' is used for the key.
+scatter(0.3127, 0.3290, 42, [0 0 0], '+', 'LineWidth', 1.3, 'HandleVisibility','off');
 
 % --- Display gamut triangles for the analysed bandwidths only (σ = 5, 10, 20 nm)
 % One triangle per bandwidth; brewermap 'Reds' ramp shades them by sigma.

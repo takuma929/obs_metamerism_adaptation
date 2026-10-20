@@ -13,7 +13,7 @@
 % ========================================================================
 % plot_fig4_diagonality.m   —   Figure 4
 %
-% The cross-observer 3x3 map D and its spread ACROSS observers.
+% The cross-observer 3x3 map Gamma (called D in earlier drafts) and its spread ACROSS observers.
 %
 % For a display with primaries P, an observer's cone excitations are
 % C_obs = T_obs*P and the standard observer's are C_std = T_std*P, so
@@ -96,16 +96,20 @@ for i = 1:3
         HI(i,j) = quantile(both,CFG.clipQ(2));
     end
 end
-% Diagonal cells share one range (centred on the reference D = 1) so their
-% spreads are directly comparable; pad so D = 1 stays inside the axis.
+% Diagonal cells share one range (centred on the reference Gamma = 1) and the
+% six off-diagonal cells share another (centred on 0), so the spreads within
+% each group are directly comparable. The off-diagonal range is set by the
+% widest cell (Gamma_LM); the S-row cells then appear as spikes at 0, which is
+% the point: they are small on the same scale as the other cross-talk terms.
 dg = logical(eye(3));
-[dLo,dHi] = pad_range(min(LO(dg)), max(HI(dg)), 1);   % diagonal: shared, reference D = 1
-fprintf('shared diagonal x range: [%.4g %.4g]\n',dLo,dHi);
+[dLo,dHi] = pad_range(min(LO(dg)), max(HI(dg)), 1);     % diagonal: shared, reference 1
+[oLo,oHi] = pad_range(min(LO(~dg)), max(HI(~dg)), 0);   % off-diagonal: shared, reference 0
+fprintf('shared diagonal x range: [%.4g %.4g]; shared off-diagonal x range: [%.4g %.4g]\n',dLo,dHi,oLo,oHi);
 
 % ---- figure: 3x3 histograms -------------------------------------------
 fig = figure('Color','w','ToolBar','none','MenuBar','none');
 tl  = tiledlayout(fig,3,3,'Padding','compact','TileSpacing','compact');
-hLeg = gobjects(1,3);
+hLeg = gobjects(1,3); axDiag = gobjects(1,3);
 
 % D maps individual-observer LMS (input, col j) to standard-observer LMS
 % (output, row i); the 3x3 grid of panels mirrors that matrix layout.
@@ -121,8 +125,8 @@ for i = 1:3           % row = standard-observer cone (output)
 
         if i==j                                   % diagonal: shared range
             lo = dLo; hi = dHi;
-        else                                      % off-diagonal: its own range
-            [lo,hi] = pad_range(LO(i,j), HI(i,j), 0);
+        else                                      % off-diagonal: shared range
+            lo = oLo; hi = oHi;
         end
         edges = linspace(lo,hi,CFG.nBins+1);
 
@@ -148,8 +152,8 @@ for i = 1:3           % row = standard-observer cone (output)
         uistack(h3,'top');
 
         xlim(ax,[lo hi]);
-        % Panel title D_{ij}, e.g. D_{LM}, via TeX subscripts.
-        title(ax,sprintf('D_{%s%s}',coneNm{i},coneNm{j}), ...
+        % Panel title Gamma_{ij}, e.g. Gamma_{LM}, via TeX subscripts.
+        title(ax,sprintf('\\Gamma_{%s%s}',coneNm{i},coneNm{j}), ...
               'FontWeight','normal','FontSize',figp.fontsize,'Interpreter','tex');
         % Axis labels only on the outer edge (left column / bottom row).
         if j==1, ylabel(ax,'Norm. frequency','FontWeight','Bold'); end   % peak-normalised
@@ -168,6 +172,7 @@ for i = 1:3           % row = standard-observer cone (output)
         ticklengthcm(ax,0.08);
         % Capture the first panel's handles once to seed the shared legend.
         if i==1 && j==1, hLeg = [h1 h2 h3]; end
+        if i==j, axDiag(i) = ax; end
     end
 end
 
@@ -175,13 +180,38 @@ end
 % layout's north strip above all nine panels.
 lg = legend(hLeg, {sprintf('\\sigma = %g nm',CFG.SDpair(1)), ...
                    sprintf('\\sigma = %g nm',CFG.SDpair(2)), ...
-                   'standard observer'}, ...
+                   sprintf('standard observer (\\Gamma = I, any \\sigma)')}, ...
             'Box','off','FontSize',figp.fontsize,'Orientation','horizontal');
 lg.Layout.Tile = 'north';
 
-% Two-column width; export a vector PDF plus a 600-dpi PNG for the Word draft.
+% Two-column width; a strip above the panels holds the 3x3 key to the matrix
+% layout. Export a vector PDF plus a 600-dpi PNG for the Word draft.
 fig.Units='centimeters'; fig.InvertHardcopy='off';
-fig.Position = [6,6,figp.twocolumn, figp.twocolumn*0.80];
+panH = figp.twocolumn*0.80;  keyH = 2.3;                 % panel block / key strip [cm]
+fig.Position = [6,6,figp.twocolumn, panH+keyH];
+tl.Units = 'centimeters'; tl.OuterPosition = [0 0 figp.twocolumn panH];
+% 3x3 key: which panel is which matrix entry (rows = standard-observer cone,
+% columns = individual-observer cone), drawn top-left in the key strip.
+axK = axes(fig,'Units','centimeters','Position',[0.35, panH+0.15, 2.0, 2.0], ...
+    'XLim',[0 3],'YLim',[0 3],'Visible','off'); hold(axK,'on');
+for i = 1:3
+    for j = 1:3
+        rectangle(axK,'Position',[j-1, 3-i, 1, 1],'FaceColor',ones(1,3)*0.97,'EdgeColor','k','LineWidth',0.5);
+        text(axK,j-0.5,3-i+0.5,sprintf('\\Gamma_{%s%s}',coneNm{i},coneNm{j}),'HorizontalAlignment','center', ...
+            'VerticalAlignment','middle','FontWeight','bold','FontName','Arial','FontSize',figp.fontsize+1,'Interpreter','tex');
+    end
+end
+% Boxes around the three diagonal panels (the per-channel gains), drawn as
+% figure-level rectangles around each panel's outer position.
+drawnow;
+for i = 1:3
+    % positions in cm (axes inside a tiledlayout report normalized units
+    % relative to the layout, not the figure), then -> figure-normalized
+    axDiag(i).Units = 'centimeters';
+    ps = axDiag(i).Position; ti = axDiag(i).TightInset; fp = fig.Position; pad = 0.05;
+    op = [(ps(1)-ti(1)-pad)/fp(3), (ps(2)-ti(2)-pad)/fp(4), (ps(3)+ti(1)+ti(3)+2*pad)/fp(3), (ps(4)+ti(2)+ti(4)+2*pad)/fp(4)];
+    annotation(fig,'rectangle',op,'Color',[0.15 0.15 0.15],'LineWidth',0.6);
+end
 exportgraphics(fig, fullfile(figDir,'fig4_diagonality.pdf'),'ContentType','vector');
 exportgraphics(fig, fullfile(figDir,'fig4_diagonality.png'),'Resolution',600);  % for the .docx
 fprintf('Saved %s (+ .png)\n', fullfile(figDir,'fig4_diagonality.pdf'));
@@ -189,14 +219,14 @@ fprintf('Saved %s (+ .png)\n', fullfile(figDir,'fig4_diagonality.pdf'));
 % ---- report the spread that the mean would have hidden ------------------
 % Print mean +/- std of each D entry across observers - the between-observer
 % variability that averaging D would have collapsed (the point of the figure).
-fprintf('\nBetween-observer spread of D (std across %d observers):\n', nObs);
+fprintf('\nBetween-observer spread of Gamma (std across %d observers):\n', nObs);
 for s = 1:2
     fprintf('  sigma = %2g nm\n', CFG.SDpair(s));
     for i = 1:3
         fprintf('    ');
         for j = 1:3
             v = squeeze(Dm{s}(i,j,:));
-            fprintf('D_%s%s: %6.3f +/- %.3f   ', coneNm{i},coneNm{j}, mean(v), std(v));
+            fprintf('G_%s%s: %6.3f +/- %.3f   ', coneNm{i},coneNm{j}, mean(v), std(v));
         end
         fprintf('\n');
     end

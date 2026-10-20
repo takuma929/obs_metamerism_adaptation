@@ -29,6 +29,9 @@ function main(REBUILD)
 %     (2) compare_nonlinear_adapt_ucs - pool the CAM16-UCS metamerism over the
 %         degree-of-adaptation sweep. Writes results/compare_nl_adapt_ucs.mat
 %         (used by the Fig. 4 box plots).
+%     (2b) adapting_white_variants - rerun the D = 1 scoring with the adapting
+%         white defined as the mean LMS or the mean chromaticity instead of the
+%         brightest surface. Writes results/adapting_white_variants.mat (Fig. 7).
 %     (3) redraw every manuscript figure into figs/.
 %
 %   Requirements
@@ -69,8 +72,17 @@ if REBUILD
     evalin('base', 'run_metamerism_analysis');
     fprintf('\n=== [2/3] Pooling CAM16-UCS metamerism over the adaptation sweep ===\n');
     evalin('base', 'compare_nonlinear_adapt_ucs');
+    fprintf('\n=== [2b/3] Adapting-white definitions (mean LMS / mean chromaticity) ===\n');
+    evalin('base', 'adapting_white_variants');
 else
     fprintf('\n=== [1-2/3] Skipped analysis (reusing results/*.mat) ===\n');
+end
+
+% Figure 7 also needs the optimised-white upper bound; that search is slow
+% (per-observer Nelder-Mead), so it is only run when its result is missing.
+if ~exist(fullfile(projectRoot,'results','optimal_white_upperlimit.mat'), 'file')
+    fprintf('\n=== Optimised adapting white (upper bound; slow) ===\n');
+    evalin('base', 'optimal_white_upperlimit');
 end
 
 % ------------------------------------------------------------- 2. figures
@@ -98,7 +110,8 @@ figures = { ...
     'plot_fig3_schematic', ...        % Fig 3: metamerism-quantification schematic (reproduced spectra)
     'plot_fig5_degree_of_metamerism', ... % Fig 4: metamerism vs degree of adaptation (box plots + reduction)
     'plot_fig6_ellipses', ...         % Fig 5: CAM16-UCS (a',b') ellipses before/after adaptation
-    'plot_fig4_diagonality'};         % Fig 6: cross-observer map D distribution
+    'plot_fig4_diagonality', ...      % Fig 6: cross-observer map Γ distribution
+    'plot_fig7_adapting_white'};      % Fig 7: adapting-white definitions (bar graph)
 
 for i = 1:numel(figures)
     fprintf('  -> %s\n', figures{i});

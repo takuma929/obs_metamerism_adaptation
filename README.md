@@ -70,6 +70,7 @@ src/analysis/              observer generation, the simulation, and statistics
   stats_ellipse_and_daylight.m              between-observer ellipse-area statistics
   fig6_blue_hue_test.m                      blue-surface / short-wavelength test
   optimal_white_upperlimit.m                best-white upper bound on the reduction
+  adapting_white_variants.m                 alternative adapting-white anchors (mean LMS, mean chromaticity)
   check_uv_saturation.m                     stimulus-saturation sanity check
 src/plotting/              one script per manuscript figure (self-contained)
 src/functions/             shared helpers (figure styling, daylight SPD, IES TM-30, …)
@@ -90,7 +91,8 @@ The figure **script** numbers were fixed early and no longer match the final
 | `plot_fig3_schematic`                 | Figure 3 — metamerism-quantification schematic |
 | `plot_fig5_degree_of_metamerism`      | Figure 4 — metamerism vs degree of adaptation |
 | `plot_fig6_ellipses`                  | Figure 5 — CAM16-UCS (a′, b′) ellipses before/after adaptation |
-| `plot_fig4_diagonality`               | Figure 6 — cross-observer map D distribution |
+| `plot_fig4_diagonality`               | Figure 6 — cross-observer map Γ distribution |
+| `plot_fig7_adapting_white`            | Figure 7 — adapting-white definitions (bar graph, mean LMS / mean chromaticity vs brightest surface) |
 
 Each figure script writes into its own `figs/figN/` subfolder (named by the
 *script* number).
