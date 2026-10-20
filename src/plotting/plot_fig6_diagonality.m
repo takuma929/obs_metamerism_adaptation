@@ -1,17 +1,15 @@
 % ========================================================================
 % MANUSCRIPT FIGURE 6 (Optics Express, "Adaptation reduces inter-observer
-%   metamerism with narrow-band primaries").  IMPORTANT: the script name says
-%   "fig4" but the figure was RENUMBERED to Figure 6 in the manuscript; the
-%   script number does NOT track the manuscript number.
+%   metamerism with narrow-band primaries").
 %
 % INPUT  .mat : results/results_AsanoCIE2006_metamerism_CALC_multiIlluminant.mat
 %               (only D_set and params are loaded - see note near the load).
-% OUTPUTS     : figs/fig4/fig4_diagonality.pdf (vector) and .png (600 dpi, for
+% OUTPUTS     : figs/fig6/fig6_diagonality.pdf (vector) and .png (600 dpi, for
 %               the Word manuscript), plus a between-observer spread table to
 %               the Command Window.
 % ------------------------------------------------------------------------
 % ========================================================================
-% plot_fig4_diagonality.m   —   Figure 4
+% plot_fig6_diagonality.m   —   Figure 6
 %
 % The cross-observer 3x3 map Gamma (called D in earlier drafts) and its spread ACROSS observers.
 %
@@ -38,8 +36,8 @@
 % observer cone fundamentals), so only the small D_set/params fields are loaded —
 % not the large per-observer chromaticity arrays.
 %
-% Run on its own:  >> plot_fig4_diagonality
-% Output: figs/fig4/fig4_diagonality.pdf   (vector, two-column width)
+% Run on its own:  >> plot_fig6_diagonality
+% Output: figs/fig6/fig6_diagonality.pdf   (vector, two-column width)
 % ========================================================================
 clearvars; close all; clc;
 
@@ -50,7 +48,7 @@ if ~exist(fullfile(projectRoot,'src'),'dir')
     projectRoot = '/Users/takuma/Documents/GitHub/observer_metamerism_adaptation';
 end
 addpath(genpath(fullfile(projectRoot,'src')));
-figDir = fullfile(projectRoot,'figs','fig4'); if ~exist(figDir,'dir'); mkdir(figDir); end
+figDir = fullfile(projectRoot,'figs','fig6'); if ~exist(figDir,'dir'); mkdir(figDir); end
 T = load(fullfile(projectRoot,'data','fig_parameters.mat')); figp = T.figp;
 inMat = fullfile(projectRoot,'results','results_AsanoCIE2006_metamerism_CALC_multiIlluminant.mat');
 assert(exist(inMat,'file')==2,'Missing results: %s',inMat);
@@ -212,9 +210,9 @@ for i = 1:3
     op = [(ps(1)-ti(1)-pad)/fp(3), (ps(2)-ti(2)-pad)/fp(4), (ps(3)+ti(1)+ti(3)+2*pad)/fp(3), (ps(4)+ti(2)+ti(4)+2*pad)/fp(4)];
     annotation(fig,'rectangle',op,'Color',[0.15 0.15 0.15],'LineWidth',0.6);
 end
-exportgraphics(fig, fullfile(figDir,'fig4_diagonality.pdf'),'ContentType','vector');
-exportgraphics(fig, fullfile(figDir,'fig4_diagonality.png'),'Resolution',600);  % for the .docx
-fprintf('Saved %s (+ .png)\n', fullfile(figDir,'fig4_diagonality.pdf'));
+exportgraphics(fig, fullfile(figDir,'fig6_diagonality.pdf'),'ContentType','vector');
+exportgraphics(fig, fullfile(figDir,'fig6_diagonality.png'),'Resolution',600);  % for the .docx
+fprintf('Saved %s (+ .png)\n', fullfile(figDir,'fig6_diagonality.pdf'));
 
 % ---- report the spread that the mean would have hidden ------------------
 % Print mean +/- std of each D entry across observers - the between-observer

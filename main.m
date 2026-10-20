@@ -88,7 +88,7 @@ end
 % ------------------------------------------------------------- 2. figures
 fprintf('\n=== [3/3] Drawing figures into figs/ ===\n');
 % start from a clean figs/ so stale figures from earlier runs never linger.
-% Each script writes into a per-figure subfolder (figs/fig1 ... figs/fig6);
+% Each script writes into a per-figure subfolder (figs/fig1 ... figs/fig7);
 % clear those subfolders as well as any stray top-level PDFs/PNGs.
 figRoot = fullfile(projectRoot,'figs');
 delete(fullfile(figRoot,'*.pdf'));
@@ -108,9 +108,9 @@ figures = { ...
     'plot_fig1_observers', ...        % Fig 1: individual-observer cone fundamentals
     'plot_fig2_stimuli', ...          % Fig 2: reflectances, illuminant classes, primaries, gamut, sRGB
     'plot_fig3_schematic', ...        % Fig 3: metamerism-quantification schematic (reproduced spectra)
-    'plot_fig5_degree_of_metamerism', ... % Fig 4: metamerism vs degree of adaptation (box plots + reduction)
-    'plot_fig6_ellipses', ...         % Fig 5: CAM16-UCS (a',b') ellipses before/after adaptation
-    'plot_fig4_diagonality', ...      % Fig 6: cross-observer map Γ distribution
+    'plot_fig4_degree_of_metamerism', ... % Fig 4: metamerism vs degree of adaptation (box plots + reduction)
+    'plot_fig5_ellipses', ...         % Fig 5: CAM16-UCS (a',b') ellipses before/after adaptation
+    'plot_fig6_diagonality', ...      % Fig 6: cross-observer map Γ distribution
     'plot_fig7_adapting_white'};      % Fig 7: adapting-white definitions (bar graph)
 
 for i = 1:numel(figures)

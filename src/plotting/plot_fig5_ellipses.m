@@ -1,9 +1,7 @@
 % ========================================================================
-% plot_fig6_ellipses.m   —   Figure 6 (CAM16-UCS a'b' covariance ellipses)
+% plot_fig5_ellipses.m   —   Figure 5 (CAM16-UCS a'b' covariance ellipses)
 %
-% NOTE ON FIGURE NUMBERING: this SCRIPT is named "fig6", but it produces the
-% MANUSCRIPT's Figure 5 (script and manuscript numbers differ because the
-% figures were renumbered during revision). Output PDFs go to figs/fig6/.
+% Output PDFs go to figs/fig5/.
 %
 % WHAT THIS FIGURE SHOWS (manuscript Figure 5): the CAM16-UCS (a',b') chromatic
 % plane with, per representative surface, the 95% between-observer covariance
@@ -32,7 +30,7 @@
 % estimate (CFG.nObsSub).
 %
 % Run section by section: SETUP first, then any group section.
-% Output: figs/fig6/fig6_<class>_uvEllipse_SD{05,20}.pdf
+% Output: figs/fig5/fig5_<class>_uvEllipse_SD{05,20}.pdf
 % ========================================================================
 
 %% ============================ SETUP ============================
@@ -45,7 +43,7 @@ if ~exist(fullfile(projectRoot,'src'),'dir')
 end
 addpath(genpath(fullfile(projectRoot,'src')));
 dataDir = fullfile(projectRoot,'data');
-figDir  = fullfile(projectRoot,'figs','fig6'); if ~exist(figDir,'dir'); mkdir(figDir); end
+figDir  = fullfile(projectRoot,'figs','fig5'); if ~exist(figDir,'dir'); mkdir(figDir); end
 % figp: shared figure-style parameters (fonts, column widths).
 T = load(fullfile(dataDir,'fig_parameters.mat')); figp = T.figp;
 % Main results file (the heavy metamerism analysis); loaded selectively below.
@@ -147,7 +145,7 @@ render_ellipse_group('all', okAll, ...
 
 % ===================== local helpers =====================
 function render_ellipse_group(tag, idxC, CFG,cam,M16,T_indiv,T_xyz,R_all,Ill,B,Pset,Mdisp_set,invC_set,siStored,srgbG,nG,figDir,figp)
-if isempty(idxC), warning('plot_fig6:noIll','no illuminants for "%s"',tag); return; end
+if isempty(idxC), warning('plot_fig5:noIll','no illuminants for "%s"',tag); return; end
 % Panel order: 1 = D=0, 2 = D=0.5, 3 = D=1. Not titled on the figure -- the panels
 % are identified in the caption.
 Dlist = CFG.Dlist(:)'; nDp = numel(Dlist);
@@ -248,10 +246,10 @@ for j = 1:numel(CFG.SDsel)
     fig.Position=[10,10, nDp*panelW, panelScale*figp.twocolumn/3.1];   % height scaled to match
     % Let the renderer settle before exporting the vector PDF.
     pause(0.5)
-    exportgraphics(fig, fullfile(figDir,sprintf('fig6_%s_uvEllipse_SD%02d.pdf',tag,SD)),'ContentType','vector');
+    exportgraphics(fig, fullfile(figDir,sprintf('fig5_%s_uvEllipse_SD%02d.pdf',tag,SD)),'ContentType','vector');
     close(fig);
 end
-fprintf('Fig 6 group "%s" done (%d SDs x %d D levels).\n', tag, numel(CFG.SDsel), nDp);
+fprintf('Fig 5 group "%s" done (%d SDs x %d D levels).\n', tag, numel(CFG.SDsel), nDp);
 end
 
 % Extract the two chromatic coordinates (a',b') from a stacked [J' a' b'] array;

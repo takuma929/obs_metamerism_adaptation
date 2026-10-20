@@ -1,11 +1,11 @@
 % ========================================================================
-% fig6_blue_hue_test.m
+% fig5_blue_hue_test.m
 % Test whether between-observer metamerism ellipses (CAM16-UCS a'b') are
 % larger for BLUE surfaces, at the unadapted state D = 0 and narrow primaries
-% (SD = 5 nm), pooled over all illuminants -- the regime of Fig. 6.
+% (SD = 5 nm), pooled over all illuminants -- the regime of Fig. 5.
 %
 % For every surface we form the 95% between-observer covariance ellipse of the
-% observer deviations from the standard-observer reference (same as Fig. 6),
+% observer deviations from the standard-observer reference (same as Fig. 5),
 % take its area, and its hue h = atan2(b',a') and blue-axis coordinate b' at
 % the fully-adapted (D=1) reference placement. We then test:
 %   (i)   Spearman correlation between ellipse area and b'  (blue = b'<0)
@@ -104,7 +104,7 @@ end
 % Keep surfaces with a valid ellipse and reference b'.
 val = find(isfinite(area) & isfinite(bpr));
 A=area(val); ap=apr(val); bp=bpr(val); h=hue(val); N=numel(val);
-fprintf('\n==== Fig 6 blue-hue test: D=0, SD=5 nm, pooled all illuminants ====\n');
+fprintf('\n==== Fig 5 blue-hue test: D=0, SD=5 nm, pooled all illuminants ====\n');
 fprintf('surfaces analysed: N = %d\n', N);
 
 % (i) Spearman area vs b'
@@ -149,10 +149,10 @@ fprintf('area range [%.1f, %.1f], median %.1f\n', min(A),max(A),median(A));
 fprintf('=================================================================\n');
 
 % Save per-surface arrays and test statistics for the figure/manuscript.
-save(fullfile(projectRoot,'results','fig6_blue_hue_test.mat'), ...
+save(fullfile(projectRoot,'results','fig5_blue_hue_test.mat'), ...
     'A','ap','bp','h','val','rho_b','p_b','Rcl','p_cl','p_rs','med_b','med_r');
 
-% ===================== local helpers (copied from plot_fig6) =====================
+% ===================== local helpers (copied from plot_fig5_ellipses) =====================
 % getab: drop lightness J', keep the (a',b') chroma coordinates.
 function ab = getab(s3), ab = s3(2:3,:,:); end
 % cam16_s3: CIECAM16 forward transform to CAM16-UCS J'a'b'.

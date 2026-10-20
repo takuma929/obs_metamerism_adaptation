@@ -1,10 +1,7 @@
 % ========================================================================
-% plot_fig5_degree_of_metamerism.m   —   Figure 4: observer metamerism vs degree of adaptation (all panels)
+% plot_fig4_degree_of_metamerism.m   —   Figure 4: observer metamerism vs degree of adaptation (all panels)
 %
-% NOTE ON FIGURE NUMBERING: this SCRIPT is named "fig5", but it produces the
-% MANUSCRIPT's Figure 4 (script and manuscript numbers differ because the
-% figures were renumbered during revision). Output files are written to
-% figs/fig5/ (the script-number folder), not figs/fig4/.
+% Output files are written to figs/fig4/.
 %
 % Observer metamerism as a function of the degree of chromatic adaptation D,
 % scored in CAM16-UCS. At each D every observer AND the standard-observer
@@ -27,7 +24,7 @@
 % algebraic identity. See compare_nonlinear_adapt_ucs.m for the numbers.
 %
 % Input : results/compare_nl_adapt_ucs.mat (from compare_nonlinear_adapt_ucs.m)
-% Output: figs/fig5/fig5{a,a_reduction}_*.pdf (vector)
+% Output: figs/fig4/fig4{a,a_reduction}_*.pdf (vector)
 % ========================================================================
 clearvars; close all; clc;
 
@@ -43,7 +40,7 @@ end
 addpath(genpath(fullfile(projectRoot,'src')));
 dataDir = fullfile(projectRoot,'data');
 % Vector PDFs for this figure go here; created on first run.
-figDir  = fullfile(projectRoot,'figs','fig5');
+figDir  = fullfile(projectRoot,'figs','fig4');
 if ~exist(figDir,'dir'); mkdir(figDir); end
 % Precomputed metamerism scores (produced by compare_nonlinear_adapt_ucs.m).
 inMat = fullfile(projectRoot,'results','compare_nl_adapt_ucs.mat');
@@ -108,7 +105,7 @@ for ci = 1:numel(classes)
     ax.Units='centimeters'; ax.Position=[axL,axB,axW,axH]; ticklengthcm(ax,0.1);
     % Let the renderer settle before exporting (avoids clipped/partial PDFs).
     pause(0.5)
-    exportgraphics(fig, fullfile(figDir,sprintf('fig5a_metamerism_%s.pdf',cls)),'ContentType','vector');
+    exportgraphics(fig, fullfile(figDir,sprintf('fig4a_metamerism_%s.pdf',cls)),'ContentType','vector');
     close(fig);
 end
 
@@ -155,7 +152,7 @@ for ci = 1:numel(classes)
     fig.Position=[10,10,figW,figH];
     ax.Units='centimeters'; ax.Position=[axL,axB,axW,axH]; ticklengthcm(ax,0.1);
     pause(0.5)
-    exportgraphics(fig, fullfile(figDir,sprintf('fig5a_reduction_%s.pdf',cls)),'ContentType','vector');
+    exportgraphics(fig, fullfile(figDir,sprintf('fig4a_reduction_%s.pdf',cls)),'ContentType','vector');
     close(fig);
 end
 %% ---- median values per panel, for annotating the figure ------------------
@@ -195,7 +192,7 @@ for ci = 1:numel(classes)
     end
 end
 
-fprintf('\nFig 5 done (CAM16-UCS metamerism vs degree of adaptation D = 0, 0.5, 1).\n');
+fprintf('\nFig 4 done (CAM16-UCS metamerism vs degree of adaptation D = 0, 0.5, 1).\n');
 
 % ------------------------------------------------------------------------
 function draw_cbox(ax, xc, d, w, col)
